@@ -25,7 +25,7 @@ module.exports.createCartItem = async (req, res) => {
   });
 };
 module.exports.getCartItem = async (req, res) => {
-  const cartItem = await CartItem.find({ user: req.user.id })
+  const cartItem = await CartItem.find({ user: req.user._id })
     .populate("product", "name")
     .populate("user", "name");
   return res.status(200).send(cartItem);
@@ -33,13 +33,13 @@ module.exports.getCartItem = async (req, res) => {
 
 module.exports.updateCartItem = async (req, res) => {
   const { _id, count } = _.pick(req.body, ["count", "_id"]);
-  const user = req.body.user._id;
+  const user = req.user._id;
   await cartItem.updateOne({ _id, user }, { count });
   return res.status(200).send("cart update successfully");
 };
 module.exports.deleteCartItem = async (req, res) => {
   const _id = req.params.id;
-  const userId = req.user.id;
+  const userId = req.user._id;
   await CartItem.deleteOne({ _id, user: userId });
   return res.status(200).send("Item removed successfully.");
 };
