@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button
+      id="pay"
+      style="
+        width: 100px;
+        height: 100px;
+        background: red;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 36px;
+      "
+    >
+      Pay
+    </button>
+    <script>
+      document.getElementById("pay").addEventListener("click", () => {
+        const url = "http://localhost:3001/api/payment"; // Replace with your API endpoint
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmNlMzIwNTM4MDZjOWM5NzM0OWZmZDkiLCJlbWFpbCI6ImZheXNhbG1haGFtdWRAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwibmFtZSI6IkZheXNhbCBNYWhhbXVkIiwiaWF0IjoxNzI0ODY5MzY3LCJleHAiOjE3MjU0NzQxNjd9.0eRle2IUPJgzSUYUH2mxWCdsReKgGU8CEqFlPvVqmLY"; // Replace with your Bearer token
+
+        fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    </script>
+  </body>
+</html>
