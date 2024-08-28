@@ -7,9 +7,9 @@ module.exports.initPayment = async (req, res) => {
   const userId = req.user._id;
   const cartItems = await CartItem.find({ user: userId });
   const profile = await Profile.findOne({ user: userId });
-  const { address1, address2, country, state, city, postcode, phone } = profile;
-  const totalItem = cartItem.reduce((total, item) => item.count + total, 0);
-  const totalAmount = cartItem.reduce(
+  const { address1, address2, country, state, city, postCode, phone } = profile;
+  const totalItem = cartItems.reduce((total, item) => item.count + total, 0);
+  const totalAmount = cartItems.reduce(
     (total, item) => item.count * item.price + total,
     0
   );
@@ -49,7 +49,7 @@ module.exports.initPayment = async (req, res) => {
     add2: address2,
     city: city,
     state: state,
-    postcode: postcode,
+    postcode: postCode,
     country: country,
     phone: phone,
     fax: phone,
@@ -64,7 +64,7 @@ module.exports.initPayment = async (req, res) => {
     add2: address2,
     city: city,
     state: state,
-    postcode: postcode,
+    postcode: postCode,
     country: country,
   });
 

@@ -26,6 +26,7 @@
     "mongoose": "^8.5.2",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
-    "ssl-commerz-node": "^1.0.4"
+    "ssl-commerz-node": "^1.0.4",
+    "sslcommerz-lts": "^1.1.0"
   }
 }
