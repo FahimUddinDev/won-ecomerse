@@ -34,7 +34,7 @@ module.exports.getCartItem = async (req, res) => {
 module.exports.updateCartItem = async (req, res) => {
   const { _id, count } = _.pick(req.body, ["count", "_id"]);
   const user = req.user._id;
-  await cartItem.updateOne({ _id, user }, { count });
+  await CartItem.updateOne({ _id, user }, { count });
   return res.status(200).send("cart update successfully");
 };
 module.exports.deleteCartItem = async (req, res) => {
