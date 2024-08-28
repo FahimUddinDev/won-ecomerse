@@ -3,6 +3,7 @@ const { Profile } = require("../models/profile");
 
 module.exports.getProfile = async (req, res) => {
   const userId = req.user._id;
+  console.log(userId);
   const profile = await Profile.findOne({ user: userId });
   if (profile) return res.status(200).send(profile);
   return res.status(400).send("Some thing is wrong!");
@@ -19,7 +20,8 @@ module.exports.setProfile = async (req, res) => {
     "State",
   ]);
   userProfile["user"] = userId;
-  let profile = Profile.findOne({ user: userId });
+  let profile = await Profile.findOne({ user: userId });
+  console.log(profile);
   if (profile) {
     await Profile.updateOne({ user: userId }, userProfile);
     return res.status(200).send("Profile updated Successfully.");
