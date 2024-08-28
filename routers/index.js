@@ -10,4 +10,5 @@ module.exports = (app) => {
   app.use("/api/product", productRouter);
   app.use("/api/cart", cartRouter);
   app.use("/api/profile", profileRouter);
+  app.use("/api/payment", paymentRouter);
 };
