@@ -76,7 +76,7 @@ module.exports.initPayment = async (req, res) => {
   });
 
   const response = await payment.paymentInit();
-  return res.redirect(response.redirectGatewayURL);
+  return res.status(200).send(response);
 };
 
 module.exports.ipn = async (req, res) => {};
