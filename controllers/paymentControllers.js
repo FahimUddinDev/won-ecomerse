@@ -81,7 +81,7 @@ module.exports.initPayment = async (req, res) => {
   let order = new Order({
     cartItems,
     user: userId,
-    transaction_id: tran_id,
+    transaction_id: transactionId,
     address: profile,
   });
   if (response.status === "SUCCESS") {
