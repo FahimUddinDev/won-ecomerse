@@ -1,6 +1,8 @@
 const { CartItem } = require("../models/cartItem");
 const { Profile } = require("../models/profile");
 const PaymentSession = require("ssl-commerz-node").PaymentSession;
+const { Order } = require("../models/orders");
+const { Payment } = require("../models/payments");
 
 // initial payment
 module.exports.initPayment = async (req, res) => {
@@ -76,7 +78,31 @@ module.exports.initPayment = async (req, res) => {
   });
 
   const response = await payment.paymentInit();
+  let order = new Order({
+    cartItems,
+    user: userId,
+    transaction_id: tran_id,
+    address: profile,
+  });
+  if (response.status === "SUCCESS") {
+    order.sessionKey = response["sessionkey"];
+    await order.save();
+  }
   return res.status(200).send(response);
 };
 
-module.exports.ipn = async (req, res) => {};
+module.exports.ipn = async (req, res) => {
+  const payment = new Payment(req.body);
+  const tran_id = payment["tran_id"];
+  if (payment.status === "VALID") {
+    const order = await Order.updateOne(
+      { transaction_id: tran_id },
+      { status: "Complete" }
+    );
+    await CartItem.deleteMany(order.cartItems);
+  } else {
+    await Order.deleteOne({ transaction_id: tran_id });
+  }
+  await payment.save();
+  return res.status(200).send("IPN");
+};
