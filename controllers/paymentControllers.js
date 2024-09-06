@@ -3,6 +3,7 @@ const { Profile } = require("../models/profile");
 const PaymentSession = require("ssl-commerz-node").PaymentSession;
 const { Order } = require("../models/orders");
 const { Payment } = require("../models/payments");
+const path = require("path");
 
 // initial payment
 module.exports.initPayment = async (req, res) => {
@@ -25,7 +26,7 @@ module.exports.initPayment = async (req, res) => {
 
   // Set the urls
   payment.setUrls({
-    success: "yoursite.com/success", // If payment Succeed
+    success: "https://won-ecomerse.vercel.app/api/payment/success", // If payment Succeed
     fail: "yoursite.com/fail", // If payment failed
     cancel: "yoursite.com/cancel", // If user cancel payment
     ipn: "https://won-ecomerse.vercel.app/api/payment/ipn", // SSLCommerz will send http post request in this link
@@ -92,6 +93,7 @@ module.exports.initPayment = async (req, res) => {
 };
 
 module.exports.ipn = async (req, res) => {
+  console.log("Calling IPN");
   const payment = new Payment(req.body);
   const tran_id = payment["tran_id"];
   if (payment.status === "VALID") {
@@ -105,4 +107,8 @@ module.exports.ipn = async (req, res) => {
   }
   await payment.save();
   return res.status(200).send("IPN");
+};
+
+module.exports.paymentSuccess = async (req, res) => {
+  res.sendFile(path.join(__basedir + "public/success.html"));
 };
